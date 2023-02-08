@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.lms.courseservice.dto.CourseDto;
@@ -15,11 +16,17 @@ import com.lms.courseservice.repository.CourseRepository;
 @Service
 public class CourseServiceImpl implements CourseService{
 	
-	@Autowired
+//	@Autowired
 	private CourseRepository courseRepo;
 	
-	@Autowired
+//	@Autowired
 	private ModelMapper modelMapper;
+	
+	 @Autowired 
+	 CourseServiceImpl(@Qualifier("myEntityMapper") ModelMapper modelMapper,@Qualifier("courseRepository")CourseRepository courseRepo) {
+	        this.modelMapper = modelMapper;
+	        this.courseRepo = courseRepo;
+	    }
 
 	@Override
 	public Optional<CourseDto> getCourseById(long courseId) {

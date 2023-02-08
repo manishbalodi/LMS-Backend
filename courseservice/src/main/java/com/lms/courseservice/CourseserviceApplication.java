@@ -12,7 +12,8 @@ public class CourseserviceApplication {
 		SpringApplication.run(CourseserviceApplication.class, args);
 	}
 	
-	@Bean
+	@Bean(name = "myEntityMapper")
+//	@Bean
 	public static ModelMapper getModelMapper() {
 		return new ModelMapper();
 	}
