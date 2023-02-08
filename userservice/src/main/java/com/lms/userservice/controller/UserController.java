@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lms.userservice.dto.ApiResponse;
@@ -23,6 +24,7 @@ import com.lms.userservice.security.model.JwtRequest;
 import com.lms.userservice.security.model.JwtResponse;
 import com.lms.userservice.security.service.JwtService;
 import com.lms.userservice.security.util.JwtUtil;
+import com.lms.userservice.service.CoachService;
 import com.lms.userservice.service.UserService;
 
 @RestController
@@ -36,6 +38,8 @@ public class UserController {
     private JwtService jwtService;
     @Autowired
     private UserService userService;
+	@Autowired
+	CoachService coachService;
     
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody UserDto userDto) throws UserException{
@@ -60,5 +64,12 @@ public class UserController {
 		return new ResponseEntity<>(new ApiResponse(200, "Course List", courseList),HttpStatus.OK);
 
     }
+    
+    @GetMapping("/searchCourse")
+	public ResponseEntity<ApiResponse> searchCourse(@RequestParam String courseCategory,
+			@RequestParam String courseDuration) throws UserException{
+		List<CourseDto> courseList = coachService.searchCourse(courseCategory,courseDuration);
+		return new ResponseEntity<>(new ApiResponse(200, "Course List", courseList),HttpStatus.OK);
+	}
 
 }

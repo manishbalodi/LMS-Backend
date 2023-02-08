@@ -33,7 +33,7 @@ public class CoachServiceImpl implements CoachService{
 
 	@Override
 	public List<CourseDto> allCoursesByUserName(String userName) throws UserException {
-		ResponseEntity<ApiResponse> response = restTemplate.getForEntity(baseUrl+"/api/course/getCourses?coachUserName="+userName, ApiResponse.class);
+		ResponseEntity<ApiResponse> response = restTemplate.getForEntity(baseUrl+"/api/course/getCourses?userName="+userName, ApiResponse.class);
 		if(response.getStatusCodeValue()==200) {
 			return (List<CourseDto>) response.getBody().getData();
 		}
@@ -74,6 +74,17 @@ public class CoachServiceImpl implements CoachService{
 		}
 		else {
 		 throw new UserException("Course Not saved/error ocurred");
+		}
+	}
+
+	@Override
+	public List<CourseDto> searchCourse(String courseCategory, String courseDuration) throws UserException {
+		ResponseEntity<ApiResponse> response = restTemplate.getForEntity(baseUrl+"/api/course/searchCourses?courseCategory="+courseCategory+"&courseDuration="+courseDuration, ApiResponse.class);
+		if(response.getStatusCodeValue()==200) {
+			return (List<CourseDto>) response.getBody().getData();
+		}
+		else {
+			throw new UserException("No courses found/error ocurred");
 		}
 	}
 

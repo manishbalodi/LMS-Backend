@@ -14,4 +14,6 @@ public interface CoachService {
 
 	CourseDto addCourse(CourseDto courseDto) throws UserException;
 
+	List<CourseDto> searchCourse(String courseCategory, String courseDuration) throws UserException;
+
 }

@@ -2,6 +2,7 @@ package com.lms.courseservice.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,20 @@ public class CourseServiceImpl implements CourseService{
 	}
 
 	@Override
-	public Optional<List<CourseDto>> getCoursesByEmail(String coachEmail) {
-		Optional<List<Course>> courses = courseRepo.findByCreatedBy(coachEmail);
+	public Optional<List<CourseDto>> getCoursesByUserName(String userName) {
+		Optional<List<Course>> courses = courseRepo.findByCreatedBy(userName);
 		Optional<List<CourseDto>> coursesDto = modelMapper.map(courses, Optional.class);
+		return coursesDto;
+	}
+
+	@Override
+	public Optional<List<CourseDto>> searchCourses(String courseCategory, int courseDuration) {
+		Optional<List<Course>> courses = courseRepo.findByCourseTechnology(courseCategory);
+		Optional<List<CourseDto>> coursesDto = Optional.of(courses.get().stream().map(course->modelMapper.map(course, CourseDto.class)).collect(Collectors.toList()));
+		if(courseDuration>0){
+			Optional<List<CourseDto>> filteredCoursesDto = Optional.of(coursesDto.get().stream().filter(course->course.getCourseDuration()<=courseDuration).collect(Collectors.toList()));
+			return filteredCoursesDto;
+		}
 		return coursesDto;
 	}
 

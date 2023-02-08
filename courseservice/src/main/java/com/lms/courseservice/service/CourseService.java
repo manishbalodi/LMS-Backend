@@ -16,6 +16,8 @@ public interface CourseService {
 
 	Optional<List<CourseDto>> getAllCourses();
 
-	Optional<List<CourseDto>> getCoursesByEmail(String coachEmail);
+	Optional<List<CourseDto>> getCoursesByUserName(String userName);
+
+	Optional<List<CourseDto>> searchCourses(String courseCategory, int courseDuration);
 
 }

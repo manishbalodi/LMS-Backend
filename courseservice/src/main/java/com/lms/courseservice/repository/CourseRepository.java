@@ -15,4 +15,6 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 //	@Query("select * from course where created_by=")
 	Optional<List<Course>> findByCreatedBy(String coachEmail);
 
+	Optional<List<Course>> findByCourseTechnology(String courseCategory);
+
 }

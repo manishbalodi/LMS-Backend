@@ -24,7 +24,7 @@ import com.lms.courseservice.exception.CourseException;
 import com.lms.courseservice.service.CourseService;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("api/course")
 @CrossOrigin
 public class CourseController {
 	
@@ -43,13 +43,24 @@ public class CourseController {
 	}
 	
 	@GetMapping("/getCourses")
-	public ResponseEntity<ApiResponse> getCoursesById(@RequestParam String coachEmail) throws CourseException{
-		Optional<List<CourseDto>> course =  courseService.getCoursesByEmail(coachEmail);
+	public ResponseEntity<ApiResponse> getCoursesById(@RequestParam String userName) throws CourseException{
+		Optional<List<CourseDto>> course =  courseService.getCoursesByUserName(userName);
 		if(course.isPresent()) {
 			return new ResponseEntity<>(new ApiResponse(200, "Course List", course.get()),HttpStatus.OK);
 		}
 		else {
-			throw new CourseException("Courses Not Found for : course id-" +coachEmail);
+			throw new CourseException("Courses Not Found for : coach id-" +userName);
+		}
+	}
+	
+	@GetMapping("/searchCourses")
+	public ResponseEntity<ApiResponse> searchCourses(@RequestParam String courseCategory,@RequestParam int courseDuration) throws CourseException{
+		Optional<List<CourseDto>> course =  courseService.searchCourses(courseCategory,courseDuration);
+		if(course.isPresent()) {
+			return new ResponseEntity<>(new ApiResponse(200, "Course List", course.get()),HttpStatus.OK);
+		}
+		else {
+			throw new CourseException("Courses Not Found");
 		}
 	}
 	
